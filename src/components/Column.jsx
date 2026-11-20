@@ -1,25 +1,62 @@
 
 import TaskCard from "./TaskCard";
 
-function Column({ title, tasks }) {
+function Column({
+  title,
+  status,
+  tasks,
+  moveTask,
+  deleteTask,
+  archiveTask,
+}) {
+  const columnClasses = {
+    todo: "todo-column",
+    "in-progress": "progress-column",
+    done: "done-column",
+  };
+
   return (
-    <div className="kanban-column">
+    <section className={`kanban-column ${columnClasses[status]}`}>
 
-      <div className="column-header">
-        <h2>{title}</h2>
-        <span className="task-count">{tasks.length}</span>
+      <header className="column-header">
+
+        <div className="column-title">
+          <span className="column-dot"></span>
+          <h2>{title}</h2>
+        </div>
+
+        <span className="column-count">
+          {tasks.length}
+        </span>
+
+      </header>
+
+      <div className="column-content">
+
+        {tasks.length > 0 ? (
+
+          tasks.map((task) => (
+            <TaskCard
+              key={task.id}
+              task={task}
+              moveTask={moveTask}
+              deleteTask={deleteTask}
+              archiveTask={archiveTask}
+            />
+          ))
+
+        ) : (
+
+          <div className="empty-column">
+            <span>📋</span>
+            <p>No tasks here yet</p>
+          </div>
+
+        )}
+
       </div>
 
-      <div className="task-list">
-        {tasks.map((task) => (
-          <TaskCard
-            key={task.id}
-            task={task}
-          />
-        ))}
-      </div>
-
-    </div>
+    </section>
   );
 }
 
